@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ben's Holidays - Browse Trips</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+
+            background-color: #f5f7fa;
+            color: #2c3e50;
+        }
+        
+        .navbar {
+            background-color: #3498db;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .search-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+        
+        .search-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        .search-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .search-group {
+            margin-bottom: 0;
+        }
+        
+        .search-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .search-input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        .search-btn {
+            align-self: flex-end;
+            background-color: #3498db;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .search-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .trips-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+        }
+        
+        .trip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .trip-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .trip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-color: #3498db;
+        }
+        
+        .trip-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .trip-info {
+            padding: 1.2rem;
+        }
+        
+        .trip-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+        
+        .trip-location {
+            display: flex;
+            align-items: center;
+            color: #7f8c8d;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .trip-location i {
+            margin-right: 0.5rem;
+        }
+        
+        .trip-price {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #3498db;
+            margin: 0.5rem 0;
+        }
+        
+        .trip-duration {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .trip-rating {
+            color: #f39c12;
+            margin-bottom: 1rem;
+        }
+        
+        .trip-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .view-btn {
+            background-color: #3498db;
+            color: white;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .view-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .wishlist-btn {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .wishlist-btn:hover {
+            transform: scale(1.2);
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: #7f8c8d;
+            grid-column: 1 / -1;
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="logo">Ben's Holidays</a>
+        <div class="nav-links">
+            <a href="/user_home_pg">Home</a>
+            <a href="/user_trip_pg" class="active">Trips</a>
+            <a href="/user_prof_pg">Profile</a>
+            <a href="/user_review_pg" class="active">Review</a>
+
+        </div>
+        <div class="user-profile">
+            <span>Welcome, {{ request.session.user_name }}</span>
+            <a href="/logOut">logout</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="search-section">
+            <h2 class="search-title">Find Your Perfect Trip</h2>
+            
+        </div>
+        
+        <div class="trips-section">
+            
+            <main class="main-content">
+                <div class="header">
+                    <h1>Tour Trip Management</h1>
+                  
+                </div>
+                
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <div class="search-section">
+                                <h2 class="search-title">Find Your Perfect Trip</h2>
+                                <form action="/user_trip_pg" method="get" class="search-form">
+                                    <div class="search-group">
+                                        <label for="trip_type">Trip Type</label>
+                                        <select name="trip_type" id="trip_type" class="search-input">
+                                            <option value="">-- Select --</option>
+                                            <option value="AD">Adventure</option>
+                                            <option value="BE">Beach</option>
+                                            <option value="CU">Cultural</option>
+                                            <option value="CR">Cruise</option>
+                                            <option value="EC">Eco</option>
+                                            <option value="FD">Food & Drink</option>
+                                            <option value="HI">Hiking</option>
+                                            <option value="SA">Safari</option>
+                                            <option value="SI">Sightseeing</option>
+                                            <option value="WE">Wellness</option>
+                                        </select>
+                                    </div>
+                            
+                                    <div class="search-group">
+                                        <label>&nbsp;</label>
+                                        <button type="submit" class="search-btn">Search</button>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                            {% for data in data %}
+                            <tr>
+                                <td>
+                                    <img src="media/{{ data.image }}" alt="{{ data.name }}" style="max-width: 300px; max-height: 300px;">
+                                </td>
+                                <td style="width: 350px;">
+                                    <label>name :- {{data.name}}</label><br>
+                                    <label>location :- {{data.location}}</label><br>
+                                    <label>trip type :- 
+                                        {% if data.trip_type == 'AD' %}
+                                            <i class="fas fa-hiking"></i> Adventure
+                                        {% elif data.trip_type == 'BE' %}
+                                            <i class="fas fa-umbrella-beach"></i> Beach
+                                        {% elif data.trip_type == 'CU' %}
+                                            <i class="fas fa-landmark"></i> Cultural
+                                        {% elif data.trip_type == 'CR' %}
+                                            <i class="fas fa-ship"></i> Cruise
+                                        {% elif data.trip_type == 'EC' %}
+                                            <i class="fas fa-leaf"></i> Eco
+                                        {% elif data.trip_type == 'FD' %}
+                                            <i class="fas fa-utensils"></i> Food & Drink
+                                        {% elif data.trip_type == 'HI' %}
+                                            <i class="fas fa-mountain"></i> Hiking
+                                        {% elif data.trip_type == 'SA' %}
+                                            <i class="fas fa-paw"></i> Safari
+                                        {% elif data.trip_type == 'SI' %}
+                                            <i class="fas fa-binoculars"></i> Sightseeing
+                                        {% elif data.trip_type == 'WE' %}
+                                            <i class="fas fa-spa"></i> Wellness
+                                        {% endif %}
+                                    </label><br>
+                                    <label>duration :- {{data.duration}}</label><br>
+                                    <label>difficulty :- 
+                                        {% if data.difficulty == 'E' %}
+                                        <i class="fas fa-smile"></i> Easy
+                                        {% elif data.difficulty == 'M' %}
+                                            <i class="fas fa-meh"></i> Medium
+                                        {% else %}
+                                            <i class="fas fa-frown"></i> Hard
+                                        {% endif %}
+                                    </label><br>
+                                    <label>price :- {{data.price}}</label><br>
+                                    <label>discount :- {{data.discount}}</label><br>
+                                    <label>capacity :- {{data.capacity}}</label><br>
+                                    <label>available seats :- {{data.available_seats}}</label><br>
+                                </td>
+                                <td>
+                                    <label>{{data.short_description}}</label>
+                                    <p>{{data.description}}</p>
+                                </td>
+                               
+                               
+                                <td  >
+                                    <div class="action-btns"  >
+                                        <!-- <button class="btn btn-primary btn-sm" onclick="handleEditGuide('{{ guide.id }}')">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button> -->
+                                        <a href="/bookTrip_btn/{{ data.id }}/{{ data.price }}">
+                                            <button class="btn btn-success btn-sm" style="width:  100px;height: 50px;">
+                                                <i class="fas fa-calendar-check"></i> Book
+                                            </button>
+                                        </a>
+                                        
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" style="text-align: center;">No trip found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+               
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Wishlist functionality
+        document.querySelectorAll('.wishlist-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const tripId = this.getAttribute('data-trip-id');
+                const heartIcon = this.querySelector('i');
+                
+                // Toggle heart icon
+                if (heartIcon.classList.contains('far')) {
+                    heartIcon.classList.remove('far');
+                    heartIcon.classList.add('fas');
+                    // Here you would typically make an AJAX call to add to wishlist
+                    console.log(`Added trip ${tripId} to wishlist`);
+                } else {
+                    heartIcon.classList.remove('fas');
+                    heartIcon.classList.add('far');
+                    // Here you would typically make an AJAX call to remove from wishlist
+                    console.log(`Removed trip ${tripId} from wishlist`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

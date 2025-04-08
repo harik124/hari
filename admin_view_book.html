@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Ben's Holidays</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #2c3e50;
+            --danger: #e74c3c;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #7f8c8d;
+            --light-gray: #e0e0e0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--secondary);
+        }
+        
+        .admin-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            background-color: var(--secondary);
+            color: white;
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+        
+        .brand {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .brand h2 {
+            font-size: 1.25rem;
+        }
+        
+        .brand p {
+            font-size: 0.8rem;
+            color: var(--light-gray);
+            opacity: 0.8;
+        }
+        
+        .nav-menu {
+            margin-top: 1.5rem;
+        }
+        
+        .nav-item {
+            list-style: none;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255,255,255,0.1);
+            border-left: 3px solid var(--primary);
+        }
+        
+        .nav-link i {
+            margin-right: 0.8rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            padding: 1.5rem;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .header h1 {
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 0.8rem;
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .stat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-card-title {
+            font-size: 0.9rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+        
+        .stat-card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .icon-primary {
+            background-color: var(--primary);
+        }
+        
+        .icon-success {
+            background-color: var(--success);
+        }
+        
+        .icon-warning {
+            background-color: var(--warning);
+        }
+        
+        .icon-danger {
+            background-color: var(--danger);
+        }
+        
+        .stat-card-value {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card-change {
+            font-size: 0.8rem;
+        }
+        
+        .change-up {
+            color: var(--success);
+        }
+        
+        .change-down {
+            color: var(--danger);
+        }
+        
+        /* Recent Activity */
+        .content-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        /* Table Styles */
+        .table-responsive {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        th {
+            font-weight: 600;
+            color: var(--secondary);
+            background-color: #f8f9fa;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-confirmed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-cancelled {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .admin-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                height: auto;
+                position: relative;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        /* Add these styles to your existing CSS */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .modal-content {
+        background-color: white;
+        border-radius: 10px;
+        width: 90%;
+        
+        max-width: 600px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+        animation: modalFadeIn 0.3s;
+    }
+    
+    @keyframes modalFadeIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .modal-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--light-gray);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .modal-title {
+        font-size: 1.25rem;
+        color: var(--secondary);
+    }
+    
+    .close-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--gray);
+    }
+    
+    .form-row {
+        margin-left: 10px;
+        margin-right: 10px;
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .form-group {
+        margin-left: 10px;
+        margin-right: 10px;
+        flex: 1;
+        margin-bottom: 1rem;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid var(--light-gray);
+        border-radius: 6px;
+    }
+    
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        padding: 1.5rem;
+        border-top: 1px solid var(--light-gray);
+    }
+    
+    .btn-outline {
+        background-color: white;
+        border: 1px solid var(--light-gray);
+        color: var(--secondary);
+    }
+    
+    .btn-outline:hover {
+        background-color: #f8f9fa;
+    }
+    
+    .btn-sm {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
+    }
+    
+    .status-available {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    
+    .status-unavailable {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+
+    
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="brand">
+                <h2>Administration Panel</h2>
+
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="/admin_v/admin_home" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin_v/admin_view_pack"  class="nav-link" >
+                        <i class="fas fa-suitcase"></i>
+                        Trips
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin_v/admin_view_book"  class="nav-link active">
+                        <i class="fas fa-calendar-check"></i>
+                        Bookings
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin_v/admin_view_user" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        Users
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin_v/admin_view_guide" class="nav-link">
+                        <i class="fas fa-user-tie"></i>
+                        Guides
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin_v/admin_view_review" class="nav-link">
+                        <i class="fas fa-star " ></i>Reviews
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="/admin_v" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="header">
+                <h1>Tour Trip Booking Management</h1>
+                <!-- <button id="addGuideBtn" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add New Guide
+                </button> -->
+            </div>
+            
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>image</th>
+                            <th>trip details</th>
+                            <th>about</th>
+                            <th>clint data</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for data in data %}
+                        <tr>
+                            <!-- <td>{{ data.id }}</td> -->
+                            <td>
+                                <img src="/media/{{ data.trip.image }}" alt="{{ data.name }}" style="max-width: 300px; max-height: 300px;">
+                            </td>
+                            <td style="width: 350px;">
+                                <label>name :- {{data.trip.name}}</label><br>
+                                <label>start_date :- {{data.trip.start_date}}</label><br>
+                                <label>end_date :- {{data.trip.end_date}}</label><br>
+                                <label>created_at :- {{data.trip.created_at}}</label><br>
+                                <label>updated_at :- {{data.trip.updated_at}}</label><br>
+                                <label>is_active :- {{data.trip.is_active}}</label><br>
+                                <label>location :- {{data.trip.location}}</label><br>
+                                <label>trip type :-
+                                    {% if data.trip.trip_type == 'AD' %}
+                                        <i class="fas fa-hiking"></i> Adventure
+                                    {% elif data.trip.trip_type == 'BE' %}
+                                        <i class="fas fa-umbrella-beach"></i> Beach
+                                    {% elif data.trip.trip_type == 'CU' %}
+                                        <i class="fas fa-landmark"></i> Cultural
+                                    {% elif data.trip.trip_type == 'CR' %}
+                                        <i class="fas fa-ship"></i> Cruise
+                                    {% elif data.trip.trip_type == 'EC' %}
+                                        <i class="fas fa-leaf"></i> Eco
+                                    {% elif data.trip.trip_type == 'FD' %}
+                                        <i class="fas fa-utensils"></i> Food & Drink
+                                    {% elif data.trip.trip_type == 'HI' %}
+                                        <i class="fas fa-mountain"></i> Hiking
+                                    {% elif data.trip.trip_type == 'SA' %}
+                                        <i class="fas fa-paw"></i> Safari
+                                    {% elif data.trip.trip_type == 'SI' %}
+                                        <i class="fas fa-binoculars"></i> Sightseeing
+                                    {% elif data.trip.trip_type == 'WE' %}
+                                        <i class="fas fa-spa"></i> Wellness
+                                    {% endif %}
+                                </label><br>
+                                <label>duration :- {{data.trip.duration}}</label><br>
+                                <label>difficulty :- 
+                                    {% if data.trip.difficulty == 'E' %}
+                                    <i class="fas fa-smile"></i> Easy
+                                    {% elif data.trip.difficulty == 'M' %}
+                                        <i class="fas fa-meh"></i> Medium
+                                    {% else %}
+                                        <i class="fas fa-frown"></i> Hard
+                                    {% endif %}
+                                </label><br>
+                                <label>price :- {{data.trip.price}}</label><br>
+                                <label>discount :- {{data.trip.discount}}</label><br>
+                                <label>capacity :- {{data.trip.capacity}}</label><br>
+                                <label>available seats :- {{data.trip.available_seats}}</label><br>
+                            </td>
+                            <td>
+                                <label>{{data.trip.short_description}}</label>
+                                <p>{{data.trip.description}}</p>
+                            </td>
+                            <td>
+                                <label>name :- {{data.user.first_name}}</label><br>
+                                <label>email :- {{data.user.email}}</label><br>
+                                <label>trip status :- {{data.status}}</label><br>
+                                <label>name :- {{data.user.first_name}}</label><br>
+                                <label>guid name :- {{data.guid.name}}</label><br>
+                                <div class="action-btns">
+                                    <!-- <button class="btn btn-primary btn-sm" onclick="handleEditGuide('{{ guide.id }}')">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button> -->
+                                    <button class="btn btn-primary btn-sm" onclick="openUpdateGuideModal('{{ data.id }}', '{{ data.guid.id }}')">
+                                        <i class="fas fa-user-edit"></i> Update Guide
+                                    </button>
+                                    
+                                </div>
+                            </td>
+                           
+                           
+                            
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" style="text-align: center;">No guides found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+           <!-- Update Guide Modal -->
+<div id="updateGuideModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Update Tour Guide</h3>
+            <button class="close-btn" onclick="closeUpdateGuideModal()">&times;</button>
+        </div>
+        <form id="updateGuideForm" method="POST">
+            {% csrf_token %}
+            <input type="hidden" id="booking_id" name="booking_id">
+            <div class="form-group">
+                <label for="guide_id">Select Guide</label>
+                <select id="guide_id" name="guide_id" class="form-control" required>
+                    <option value="">-- Select Guide --</option>
+                    {% for guide in guid_d %}
+                    <option value="{{ guide.id }}">{{ guide.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-outline" onclick="closeUpdateGuideModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Update Guide</button>
+            </div>
+        </form>
+    </div>
+</div>
+        </main>
+    </div>
+    <script>
+        // Guide Update Modal functionality
+const updateGuideModal = document.getElementById('updateGuideModal');
+const updateGuideForm = document.getElementById('updateGuideForm');
+
+function openUpdateGuideModal(bookingId, currentGuideId) {
+    document.getElementById('booking_id').value = bookingId;
+    
+    // Set current guide if exists
+    if (currentGuideId && currentGuideId !== 'None') {
+        document.getElementById('guide_id').value = currentGuideId;
+    } else {
+        document.getElementById('guide_id').value = '';
+    }
+    
+    updateGuideModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeUpdateGuideModal() {
+    updateGuideModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+    updateGuideForm.reset();
+}
+
+// Handle form submission
+updateGuideForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const bookingId = formData.get('booking_id');
+    const guideId = formData.get('guide_id');
+    
+    fetch(`/admin_v/admin_update_guide_booking/${bookingId}`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Guide updated successfully!');
+            closeUpdateGuideModal();
+            location.reload(); // Refresh to see changes
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while updating the guide.');
+    });
+});
+
+// Close modal when clicking outside
+window.addEventListener('click', function(event) {
+    if (event.target === updateGuideModal) {
+        closeUpdateGuideModal();
+    }
+});
+   
+    </script>
+</body>
+</html>
